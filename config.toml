@@ -1,0 +1,34 @@
+[config]
+refresh_rate = "1s"
+
+[server]
+# Railway proxy + external healthcheck target 8000; bind to 0.0.0.0 so the
+# container is reachable from outside the container's localhost.
+address = "0.0.0.0:8000"
+# 10MB is plenty for most log/snippet cases; raise with SERVER__MAX_CONTENT_LENGTH
+max_content_length = "10MB"
+# Persist all pastes on the /data volume (railway.toml [[volumes]] mountPath=/data).
+# Without this, files land in the container's writable layer and vanish on restart.
+upload_path = "/data"
+timeout = "30s"
+expose_version = false
+expose_list = false
+handle_spaces = "replace"
+# Lock-down (optional, env-only — verified live 2026-10-02):
+#   AUTH_TOKEN  => when set, POST / (upload) requires  Authorization: Bearer <AUTH_TOKEN>
+#                  (401 without). GET of existing pastes stays open by design.
+#   DELETE_TOKEN => when set, enables DELETE /{id} for holders of that token;
+#                   DELETE is DISABLED (404) when no delete token is configured.
+#   AUTH_TOKENS_FILE / DELETE_TOKENS_FILE => one token per line (for many tokens)
+# Leave unset for an open public pastebin. Do not bake values here.
+
+[landing_page]
+text = "rustypaste — POST / with a part named file, oneshot, url, or protected."
+content_type = "text/plain; charset=utf-8"
+
+[paste]
+random_url = { type = "petname", words = 2, separator = "-" }
+default_extension = "txt"
+default_expiry = "1h"
+duplicate_files = true
+delete_expired_files = { enabled = true, interval = "1h" }

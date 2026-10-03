@@ -1,0 +1,14 @@
+{
+  "RUST_LOG": {
+    "value": "info",
+    "description": "Log verbosity: error, warn, info, debug, trace."
+  },
+  "AUTH_TOKEN": {
+    "value": "",
+    "description": "Optional upload lock-down. When set, every POST / requires 'Authorization: Bearer *** with this value (401 without); reading existing pastes stays public. Blank = open public pastebin (the default)."
+  },
+  "DELETE_TOKEN": {
+    "value": "",
+    "description": "Optional admin delete. When set, enables DELETE /link for holders of this token. Blank = the delete endpoint is disabled (returns 404) — the safe public default."
+  }
+}
